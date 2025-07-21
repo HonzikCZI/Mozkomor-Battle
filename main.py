@@ -66,13 +66,44 @@ class player(pygame.sprite.Sprite):
 
 
 class mozkomor(pygame.sprite.Sprite):
-    def __init__(self):
-        pass
+    def __init__(self, x, y, image, mozkomor_type):
+        super().__init__()
+
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+
+        # typy mozkomorů
+        self.type = mozkomor_type
+
+        # nastavení náhodného směru mozkomora
+        self.x = random.choice([-1, 1])
+        self.y = random.choice([-1, 1])
+        self.speed = random.randint(1, 5)
 
     # kód který je volán stále dokola
     def update(self):
-        pass
+        # pohyb mozkomora
+        self.rect.x += self.x * self.speed
+        self.rect.y += self.y * self.speed
 
+        # odraz mozkomora
+        if self.rect.left < 0 or self.rect.right > width:
+            self.x = -1 * self.x
+        if self.rect.top < 100 or self.rect.bottom > height - 100:
+            self.y = -1 * self.y
+
+
+# skupina mozkomorů
+mozkomor_group = pygame.sprite.Group()
+one_mozkomor = mozkomor(500, 500, pygame.image.load("img/mozkomor-modry.png"), 0)
+mozkomor_group.add(one_mozkomor)
+one_mozkomor = mozkomor(500, 500, pygame.image.load("img/mozkomor-zeleny.png"), 1)
+mozkomor_group.add(one_mozkomor)
+one_mozkomor = mozkomor(500, 500, pygame.image.load("img/mozkomor-ruzovy.png"), 2)
+mozkomor_group.add(one_mozkomor)
+one_mozkomor = mozkomor(500, 500, pygame.image.load("img/mozkomor-zluty.png"), 3)
+mozkomor_group.add(one_mozkomor)
 
 ###################HLAVNÍ CYKLUS#########################
 lets_continue = True
@@ -80,6 +111,13 @@ while lets_continue:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             lets_continue = False
+
+    # vyplnění plochy
+    screen.fill((0, 0, 0))
+
+    # updatujeme skupinu¨
+    mozkomor_group.draw(screen)
+    mozkomor_group.update()
 
 
     # update obrazovky
