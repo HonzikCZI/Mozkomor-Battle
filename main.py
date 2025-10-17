@@ -50,12 +50,33 @@ class game:
 
 class player(pygame.sprite.Sprite):
     def __init__(self):
-        pass
+        super().__init__()
+        self.image = pygame.image.load("img/potter-icon.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = width//2
+        self.rect.bottom = height
+        
+        self.lives = 5
+        self.enter_safe_zone = 3
+        self.speed = 8
+        
+        self.catch_sound = pygame.mixer.Sound("music/expecto-patronum.mp3")
+        self.catch_sound.set_volume(0.1)
+        self.wrong_sound = pygame.mixer.Sound("music/wrong.wav")
+        self.wrong_sound.set_volume(0.1)
 
     # kód který se volá stále dokola
-    def updates(self):
-        pass
-
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and self.rect.left > 0:
+            self.rect.x -= self.speed
+        if keys[pygame.K_RIGHT] and self.rect.right < width:
+            self.rect.x += self.speed
+        if keys[pygame.K_UP] and self.rect.top > 100:
+            self.rect.y -= self.speed
+        if keys[pygame.K_DOWN] and self.rect.bottom < height - 100:
+            self.rect.y += self.speed
+            
     # návrat do bezpečné zóny
     def back_to_safe_zone(self):
         pass
@@ -105,6 +126,11 @@ mozkomor_group.add(one_mozkomor)
 one_mozkomor = mozkomor(500, 500, pygame.image.load("img/mozkomor-zluty.png"), 3)
 mozkomor_group.add(one_mozkomor)
 
+# skupina hracu
+player_group = pygame.sprite.Group()
+one_player = player()
+player_group.add(one_player)
+
 ###################HLAVNÍ CYKLUS#########################
 lets_continue = True
 while lets_continue:
@@ -115,9 +141,12 @@ while lets_continue:
     # vyplnění plochy
     screen.fill((0, 0, 0))
 
-    # updatujeme skupinu¨
+    # updatujeme skupinu mozkomoru
     mozkomor_group.draw(screen)
     mozkomor_group.update()
+    # updatujeme skupinu hracu
+    player_group.draw(screen)
+    player_group.update()
 
 
     # update obrazovky
