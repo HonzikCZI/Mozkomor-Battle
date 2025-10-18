@@ -14,6 +14,7 @@ pygame.display.set_caption("MOZKOMOR BATTLE")
 fps = 60
 clock = pygame.time.Clock()
 
+
 # classy
 class game:
     def __init__(self, our_player, group_of_mozkomors):
@@ -21,7 +22,7 @@ class game:
         self.round_number = 0
 
         self.round_time = 0
-        self.slow_down_cycle =0
+        self.slow_down_cycle = 0
 
         self.our_player = our_player
         self.group_of_mozkomors = group_of_mozkomors
@@ -31,7 +32,7 @@ class game:
         pygame.mixer.music.play(-1, 0.0)
 
         # fonty
-        self.potter_font = pygame.font.Font("font/Harry.ttf, 24")
+        self.potter_font = pygame.font.Font("font/Harry.ttf", 24)
 
         # obrazky
         blue_image = pygame.image.load("img/mozkomor-modry.png")
@@ -39,22 +40,44 @@ class game:
         yellow_image = pygame.image.load("img/mozkomor-zluty.png")
         purple_image = pygame.image.load("img/mozkomor-ruzovy.png")
         self.mozkomors_image = [blue_image, green_image, purple_image, yellow_image]
-        
+
         # generujeme mozkomora
         self.mozkomor_catch_type = random.randint(0, 3)
         self.mozkomor_catch_image = self.mozkomors_image[self.mozkomor_catch_type]
-        
+
         self.mozkomor_catch_image_rect = self.mozkomor_catch_image.get_rect()
-        self.mozkomor_catch_image_rect.centerx = width//2
+        self.mozkomor_catch_image_rect.centerx = width // 2
         self.mozkomor_catch_image_rect.top = 25
 
     # kód který je volán stale dokola
     def update(self):
-        pass
+        self.slow_down_cycle += 1
+        if self.slow_down_cycle == fps:
+            self.round_time += 1
+            self.slow_down_cycle = 0
+            print(self.round_time)
+
+        # kontrola kolioze
+        self.check_collision
 
     # vykresluje vše ve hře
     def draw(self):
-        pass
+        dark_yellow = pygame.Color("#938f0c")
+        blue = (21, 31, 217)
+        green = (24, 194, 38)
+        purple = (195, 23, 189)
+        yellow = (195, 181, 23)
+
+        colors = [blue, green, purple, yellow]
+
+        # nastaveni textu
+        catch_text = self.potter_font.render("Catch this demetor", True, dark_yellow)
+        catch_text_rect = catch_text.get_rect()
+        catch_text_rect.centerx = width // 2
+        catch_text_rect.top = 5
+
+        # bliting
+        screen.blit(catch_text, catch_text_rect)
 
     # kontroluje kolizi
     def check_collision(self):
@@ -82,13 +105,13 @@ class player(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("img/potter-icon.png")
         self.rect = self.image.get_rect()
-        self.rect.centerx = width//2
+        self.rect.centerx = width // 2
         self.rect.bottom = height
-        
+
         self.lives = 5
         self.enter_safe_zone = 3
         self.speed = 8
-        
+
         self.catch_sound = pygame.mixer.Sound("music/expecto-patronum.mp3")
         self.catch_sound.set_volume(0.1)
         self.wrong_sound = pygame.mixer.Sound("music/wrong.wav")
@@ -105,16 +128,16 @@ class player(pygame.sprite.Sprite):
             self.rect.y -= self.speed
         if keys[pygame.K_DOWN] and self.rect.bottom < height - 100:
             self.rect.y += self.speed
-            
+
     # návrat do bezpečné zóny
     def back_to_safe_zone(self):
         if self.enter_safe_zone > 0:
-            self.enter_safe_zone -= 1 
+            self.enter_safe_zone -= 1
             self.rect.bottom = height
 
     # vrací hráče do výhozí pozice
     def reset(self):
-        self.rect.centerx = width//2
+        self.rect.centerx = width // 2
         self.rect.bottom = height
 
 
@@ -163,6 +186,9 @@ player_group = pygame.sprite.Group()
 one_player = player()
 player_group.add(one_player)
 
+# objekt game
+my_game = game(one_player, one_mozkomor)
+
 ###################HLAVNÍ CYKLUS#########################
 lets_continue = True
 while lets_continue:
@@ -182,12 +208,14 @@ while lets_continue:
     # updatujeme skupinu hracu
     player_group.draw(screen)
     player_group.update()
-
+    # updatujeme ojekt podle classy game
+    my_game.update()
+    my_game.draw()
 
     # update obrazovky
     pygame.display.update()
 
-    # spomalovaní cyklu 
+    # spomalovaní cyklu
     clock.tick(fps)
 
 
