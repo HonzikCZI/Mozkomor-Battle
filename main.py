@@ -16,8 +16,37 @@ clock = pygame.time.Clock()
 
 # classy
 class game:
-    def __init__(self):
-        pass
+    def __init__(self, our_player, group_of_mozkomors):
+        self.score = 0
+        self.round_number = 0
+
+        self.round_time = 0
+        self.slow_down_cycle =0
+
+        self.our_player = our_player
+        self.group_of_mozkomors = group_of_mozkomors
+
+        # yhudba v pozadi
+        pygame.mixer.music.load("music/bg-music-hp.wav")
+        pygame.mixer.music.play(-1, 0.0)
+
+        # fonty
+        self.potter_font = pygame.font.Font("font/Harry.ttf, 24")
+
+        # obrazky
+        blue_image = pygame.image.load("img/mozkomor-modry.png")
+        green_image = pygame.image.load("img/mozkomor-zeleny.png")
+        yellow_image = pygame.image.load("img/mozkomor-zluty.png")
+        purple_image = pygame.image.load("img/mozkomor-ruzovy.png")
+        self.mozkomors_image = [blue_image, green_image, purple_image, yellow_image]
+        
+        # generujeme mozkomora
+        self.mozkomor_catch_type = random.randint(0, 3)
+        self.mozkomor_catch_image = self.mozkomors_image[self.mozkomor_catch_type]
+        
+        self.mozkomor_catch_image_rect = self.mozkomor_catch_image.get_rect()
+        self.mozkomor_catch_image_rect.centerx = width//2
+        self.mozkomor_catch_image_rect.top = 25
 
     # kód který je volán stale dokola
     def update(self):
@@ -79,11 +108,14 @@ class player(pygame.sprite.Sprite):
             
     # návrat do bezpečné zóny
     def back_to_safe_zone(self):
-        pass
+        if self.enter_safe_zone > 0:
+            self.enter_safe_zone -= 1 
+            self.rect.bottom = height
 
     # vrací hráče do výhozí pozice
     def reset(self):
-        pass
+        self.rect.centerx = width//2
+        self.rect.bottom = height
 
 
 class mozkomor(pygame.sprite.Sprite):
@@ -137,6 +169,9 @@ while lets_continue:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             lets_continue = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                one_player.back_to_safe_zone()
 
     # vyplnění plochy
     screen.fill((0, 0, 0))
@@ -156,6 +191,5 @@ while lets_continue:
     clock.tick(fps)
 
 
-
-# ukončení hry 
+# ukončení hry
 pygame.quit
