@@ -44,7 +44,6 @@ class game:
         # generujeme mozkomora
         self.mozkomor_catch_type = random.randint(0, 3)
         self.mozkomor_catch_image = self.mozkomors_image[self.mozkomor_catch_type]
-
         self.mozkomor_catch_image_rect = self.mozkomor_catch_image.get_rect()
         self.mozkomor_catch_image_rect.centerx = width // 2
         self.mozkomor_catch_image_rect.top = 25
@@ -76,8 +75,38 @@ class game:
         catch_text_rect.centerx = width // 2
         catch_text_rect.top = 5
 
+        score_text = self.potter_font.render(f"Score: {self.score}", True, dark_yellow)
+        score_text_rect = score_text.get_rect()
+        score_text_rect.topleft = (10, 4)
+
+        lives_text = self.potter_font.render(f"Lives: {self.our_player.lives}", True, dark_yellow)
+        lives_text_rect = lives_text.get_rect()
+        lives_text_rect.topleft = (10, 30)
+
+        round_text = self.potter_font.render(f"Round: {self.round_number}", True, dark_yellow)
+        round_text_rect = round_text.get_rect()
+        round_text_rect.topleft = (10, 60)
+
+        time_text = self.potter_font.render(f"Time: {self.round_time}", True, dark_yellow)
+        time_text_rect = time_text.get_rect()
+        time_text_rect.topright = (width - 5, 4)
+
+        save_zone_text = self.potter_font.render(f"Save zone: {self.our_player.enter_safe_zone}", True, dark_yellow)
+        save_zone_text_rect = save_zone_text.get_rect()
+        save_zone_text_rect.topright = (width - 5, 30)
+
+
         # bliting
         screen.blit(catch_text, catch_text_rect)
+        screen.blit(score_text, score_text_rect)
+        screen.blit(lives_text, lives_text_rect)
+        screen.blit(round_text, round_text_rect)
+        screen.blit(time_text, time_text_rect)
+        screen.blit(save_zone_text, save_zone_text_rect)
+        screen.blit(self.mozkomor_catch_image, self.mozkomor_catch_image_rect)
+
+        # Tvary
+        pygame.draw.rect(screen, colors[self.mozkomor_catch_type], (0, 100, width, height - 200), 4)
 
     # kontroluje kolizi
     def check_collision(self):
