@@ -110,7 +110,13 @@ class game:
 
     # kontroluje kolizi
     def check_collision(self):
-        pass
+        collided_mozkomor = pygame.sprite.spritecollideany(self.our_player, self.group_of_mozkomors)
+
+        if collided_mozkomor:
+            if collided_mozkomor.type == self.mozkomor_catch_type:
+                self.score +=  10 *self.round_number
+                print("joo")
+                collided_mozkomor.remove(self.group_of_mozkomors)
 
     # zahají nové kolo
     def start_new_round(self):
