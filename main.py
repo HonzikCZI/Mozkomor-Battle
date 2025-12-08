@@ -57,7 +57,7 @@ class game:
             print(self.round_time)
 
         # kontrola kolioze
-        self.check_collision
+        self.check_collision()
 
     # vykresluje vše ve hře
     def draw(self):
@@ -222,7 +222,7 @@ one_player = player()
 player_group.add(one_player)
 
 # objekt game
-my_game = game(one_player, one_mozkomor)
+my_game = game(one_player, mozkomor_group)
 
 ###################HLAVNÍ CYKLUS#########################
 lets_continue = True
