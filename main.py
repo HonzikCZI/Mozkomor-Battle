@@ -15,11 +15,11 @@ fps = 60
 clock = pygame.time.Clock()
 
 
-# classy
+# === CLASS ===
 class game:
     def __init__(self, our_player, group_of_mozkomors):
         self.score = 0
-        self.round_number = 0
+        self.round_number = 1
 
         self.round_time = 0
         self.slow_down_cycle = 0
@@ -36,6 +36,7 @@ class game:
 
         # obrazky
         blue_image = pygame.image.load("img/mozkomor-modry.png")
+        blue_image = pygame.transform.scale("blue_image", (500, 500))
         green_image = pygame.image.load("img/mozkomor-zeleny.png")
         yellow_image = pygame.image.load("img/mozkomor-zluty.png")
         purple_image = pygame.image.load("img/mozkomor-ruzovy.png")
@@ -114,7 +115,7 @@ class game:
 
         if collided_mozkomor:
             if collided_mozkomor.type == self.mozkomor_catch_type:
-                self.score +=  10 *self.round_number
+                self.score += 10 *self.round_number
                 print("joo")
                 collided_mozkomor.remove(self.group_of_mozkomors)
 
@@ -204,6 +205,7 @@ class mozkomor(pygame.sprite.Sprite):
         if self.rect.top < 100 or self.rect.bottom > height - 100:
             self.y = -1 * self.y
 
+# === INICIALIZACE ===
 
 # skupina mozkomorů
 mozkomor_group = pygame.sprite.Group()
@@ -224,7 +226,8 @@ player_group.add(one_player)
 # objekt game
 my_game = game(one_player, mozkomor_group)
 
-###################HLAVNÍ CYKLUS#########################
+# === HLAVNÍ CYKLUS ===
+
 lets_continue = True
 while lets_continue:
     for event in pygame.event.get():
