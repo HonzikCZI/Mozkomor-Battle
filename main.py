@@ -8,7 +8,7 @@ pygame.init()
 width = 1200
 height = 700
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("MOZKOMOR BATTLE")
+pygame.display.set_caption("INNOCENT FLASH DRIVE")
 
 # nastavení hry
 fps = 60
@@ -28,11 +28,11 @@ class game:
         self.group_of_mozkomors = group_of_mozkomors
 
         # yhudba v pozadi
-        pygame.mixer.music.load("music/bg-music-hp.wav")
+        pygame.mixer.music.load("music/bg-music-hp.mp3")
         pygame.mixer.music.play(-1, 0.0)
 
         # fonty
-        self.potter_font = pygame.font.Font("font/Harry.ttf", 24)      
+        self.potter_font = pygame.font.Font("font/Emulogic.ttf", 20)      
 
         # obrazky
         blue_image = pygame.image.load("img/mozkomor-modry.png")        
@@ -64,7 +64,7 @@ class game:
 
     # vykresluje vše ve hře
     def draw(self):
-        dark_yellow = pygame.Color("#938f0c")
+        dark_yellow = pygame.Color("#002fff")
         blue = (21, 31, 217)
         green = (24, 194, 38)
         purple = (195, 23, 189)
@@ -73,7 +73,7 @@ class game:
         colors = [blue, green, purple, yellow]
 
         # nastaveni textu
-        catch_text = self.potter_font.render("Catch this demetor", True, dark_yellow)
+        catch_text = self.potter_font.render("Catch this innocent flash drive", True, dark_yellow)
         catch_text_rect = catch_text.get_rect()
         catch_text_rect.centerx = width // 2
         catch_text_rect.top = 5
