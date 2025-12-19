@@ -27,7 +27,7 @@ class game:
         self.our_player = our_player
         self.group_of_mozkomors = group_of_mozkomors
 
-        # yhudba v pozadi
+        # hudba v pozadi
         pygame.mixer.music.load("music/bg-music-hp.mp3")
         pygame.mixer.music.play(-1, 0.0)
 
@@ -117,9 +117,21 @@ class game:
 
         if collided_mozkomor:
             if collided_mozkomor.type == self.mozkomor_catch_type:
+                self.our_player.catch_sound.play()
                 self.score += 10 *self.round_number
-                print("joo")
                 collided_mozkomor.remove(self.group_of_mozkomors)
+                if self.group_of_mozkomors:
+                    self.choose_new_target()
+                else:
+                    self.our_player.reset()
+                    self.start_new_round()
+
+            else:
+                self.our_player.wrong_sound.play()
+                self.our_player.lives -= 1
+                if self.our_player.lives <= 0:
+                    self.pause_game(f"result: {self.score}", "Press enter to continue the game")
+                    self.our_player.reset()
 
     # zahají nové kolo
     def start_new_round(self):
@@ -150,8 +162,8 @@ class player(pygame.sprite.Sprite):
         self.enter_safe_zone = 3
         self.speed = 8
 
-        self.catch_sound = pygame.mixer.Sound("music/expecto-patronum.mp3")
-        self.catch_sound.set_volume(0.1)
+        self.catch_sound = pygame.mixer.Sound("music/catch-sound.mp3")
+        self.catch_sound.set_volume(0.9)
         self.wrong_sound = pygame.mixer.Sound("music/wrong.wav")
         self.wrong_sound.set_volume(0.1)
 
