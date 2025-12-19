@@ -32,19 +32,21 @@ class game:
         pygame.mixer.music.play(-1, 0.0)
 
         # fonty
-        self.potter_font = pygame.font.Font("font/Harry.ttf", 24)
+        self.potter_font = pygame.font.Font("font/Harry.ttf", 24)      
 
         # obrazky
-        blue_image = pygame.image.load("img/mozkomor-modry.png")
-        blue_image = pygame.transform.scale("blue_image", (500, 500))
+        blue_image = pygame.image.load("img/mozkomor-modry.png")        
         green_image = pygame.image.load("img/mozkomor-zeleny.png")
         yellow_image = pygame.image.load("img/mozkomor-zluty.png")
         purple_image = pygame.image.load("img/mozkomor-ruzovy.png")
-        self.mozkomors_image = [blue_image, green_image, purple_image, yellow_image]
 
+        self.mozkomors_image = [blue_image, green_image, purple_image, yellow_image]
+        
         # generujeme mozkomora
         self.mozkomor_catch_type = random.randint(0, 3)
         self.mozkomor_catch_image = self.mozkomors_image[self.mozkomor_catch_type]
+        self.mozkomor_catch_image = pygame.transform.scale(self.mozkomor_catch_image, (80, 80))
+
         self.mozkomor_catch_image_rect = self.mozkomor_catch_image.get_rect()
         self.mozkomor_catch_image_rect.centerx = width // 2
         self.mozkomor_catch_image_rect.top = 25
@@ -139,7 +141,7 @@ class game:
 class player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("img/potter-icon.png")
+        self.image = pygame.transform.scale(pygame.image.load("img/potter-icon.png"), (100, 100))
         self.rect = self.image.get_rect()
         self.rect.centerx = width // 2
         self.rect.bottom = height
@@ -208,14 +210,15 @@ class mozkomor(pygame.sprite.Sprite):
 # === INICIALIZACE ===
 
 # skupina mozkomorů
+mozkomor_size=100
 mozkomor_group = pygame.sprite.Group()
-one_mozkomor = mozkomor(500, 500, pygame.image.load("img/mozkomor-modry.png"), 0)
+one_mozkomor = mozkomor(500, 500, pygame.transform.scale(pygame.image.load("img/mozkomor-modry.png"), (mozkomor_size, mozkomor_size)), 0)
 mozkomor_group.add(one_mozkomor)
-one_mozkomor = mozkomor(500, 500, pygame.image.load("img/mozkomor-zeleny.png"), 1)
+one_mozkomor = mozkomor(500, 500, pygame.transform.scale(pygame.image.load("img/mozkomor-zeleny.png"), (mozkomor_size, mozkomor_size)), 1)
 mozkomor_group.add(one_mozkomor)
-one_mozkomor = mozkomor(500, 500, pygame.image.load("img/mozkomor-ruzovy.png"), 2)
+one_mozkomor = mozkomor(500, 500, pygame.transform.scale(pygame.image.load("img/mozkomor-ruzovy.png"), (mozkomor_size, mozkomor_size)), 2)
 mozkomor_group.add(one_mozkomor)
-one_mozkomor = mozkomor(500, 500, pygame.image.load("img/mozkomor-zluty.png"), 3)
+one_mozkomor = mozkomor(500, 500, pygame.transform.scale(pygame.image.load("img/mozkomor-zluty.png"), (mozkomor_size, mozkomor_size)), 3)
 mozkomor_group.add(one_mozkomor)
 
 # skupina hracu
