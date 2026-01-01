@@ -130,16 +130,30 @@ class game:
                 self.our_player.wrong_sound.play()
                 self.our_player.lives -= 1
                 if self.our_player.lives <= 0:
-                    self.pause_game(f"result: {self.score}", "Press enter to continue the game")
+                    #self.pause_game(f"result: {self.score}", "Press enter to continue the game")
                     self.our_player.reset()
 
     # zahají nové kolo
     def start_new_round(self):
-        pass
+        self.score += int(100 * (self.round_number / (1 + self.round_time)))
+        self.round_time = 0
+        self.slow_down_cycle = 0
+        self.round_number += 1
+        self.our_player.enter_safe_zone += 1
+        for delted_mozkomor in self.group_of_mozkomors:
+            self.group_of_mozkomors.remove(delted_mozkomor)
+
+        for i in range(self.round_number):
+            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), self.mozkomors_image[0], 0))
+            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), self.mozkomors_image[1], 1))
+            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), self.mozkomors_image[2], 2))
+            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), self.mozkomors_image[3], 3))
 
     # vybírá nového mozkomora
     def choose_new_target(self):
-        pass
+        new_mozkomor_to_catch = random.choice(self.group_of_mozkomors.sprites())
+        self.mozkomor_catch_type = new_mozkomor_to_catch.type
+        self.mozkomor_catch_image = new_mozkomor_to_catch.image
 
     # pozastavení hry
     def pause_game(self):
