@@ -144,10 +144,10 @@ class game:
             self.group_of_mozkomors.remove(delted_mozkomor)
 
         for i in range(self.round_number):
-            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), self.mozkomors_image[0], 0))
-            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), self.mozkomors_image[1], 1))
-            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), self.mozkomors_image[2], 2))
-            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), self.mozkomors_image[3], 3))
+            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), pygame.transform.scale(self.mozkomors_image[0], (100, 100)), 0))
+            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), pygame.transform.scale(self.mozkomors_image[1], (100, 100)), 1))
+            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), pygame.transform.scale(self.mozkomors_image[2], (100, 100)), 2))
+            self.group_of_mozkomors.add(mozkomor(random.randint(0,width - 64), random.randint(100, height - 164), pygame.transform.scale(self.mozkomors_image[3], (100, 100)), 3))
 
     # vybírá nového mozkomora
     def choose_new_target(self):
@@ -227,10 +227,19 @@ class mozkomor(pygame.sprite.Sprite):
         self.rect.x += self.x * self.speed
         self.rect.y += self.y * self.speed
 
-        # odraz mozkomora
-        if self.rect.left < 0 or self.rect.right > width:
+        # odraz mozkomora s vynucením pozice v mezích
+        if self.rect.left < 0:
+            self.rect.left = 0
             self.x = -1 * self.x
-        if self.rect.top < 100 or self.rect.bottom > height - 100:
+        elif self.rect.right > width:
+            self.rect.right = width
+            self.x = -1 * self.x
+            
+        if self.rect.top < 100:
+            self.rect.top = 100
+            self.y = -1 * self.y
+        elif self.rect.bottom > height - 100:
+            self.rect.bottom = height - 100
             self.y = -1 * self.y
 
 # === INICIALIZACE ===
