@@ -156,8 +156,27 @@ class game:
         self.mozkomor_catch_image = new_mozkomor_to_catch.image
 
     # pozastavení hry
-    def pause_game(self):
-        pass
+    def pause_game(self, main_text, subheading_text ):
+
+        #barvi 
+        dark_yellow = pygame.Color("#002fff")
+        black = (0, 0 ,0)
+
+        # text pro pauznutí
+        main_text_crate = self.potter_font.render(main_text, True, dark_yellow)
+        main_text_crate_rect = main_text_crate.get_rect()
+        main_text_crate_rect.center = (width//2, height//2)
+
+        # podnadpis
+        subheading_text_crate = self.potter_font.render(subheading_text, True, dark_yellow)
+        subheading_text_crate_rect = subheading_text_crate.get_rect()
+        subheading_text_crate_rect = (width//2, height//2 + 60)
+
+        #zobrazeni
+        screen.fill(black)
+        screen.blit(main_text_crate, main_text_crate_rect)
+        screen.blit(subheading_text_crate, subheading_text_crate_rect)
+
 
     # resetuje hru
     def reset_game(self):
@@ -263,6 +282,7 @@ player_group.add(one_player)
 
 # objekt game
 my_game = game(one_player, mozkomor_group)
+my_game.pause_game(test)
 
 # === HLAVNÍ CYKLUS ===
 
