@@ -176,6 +176,7 @@ class game:
         screen.fill(black)
         screen.blit(main_text_crate, main_text_crate_rect)
         screen.blit(subheading_text_crate, subheading_text_crate_rect)
+        pygame.display.update()
 
 
     # resetuje hru
@@ -282,7 +283,7 @@ player_group.add(one_player)
 
 # objekt game
 my_game = game(one_player, mozkomor_group)
-my_game.pause_game(test)
+my_game.pause_game("flesh disk game", "click enter to start")
 
 # === HLAVNÍ CYKLUS ===
 
