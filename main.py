@@ -178,6 +178,14 @@ class game:
         screen.blit(subheading_text_crate, subheading_text_crate_rect)
         pygame.display.update()
 
+        # zastaveni hry
+        paused = True
+        while paused:
+            for one_event in pygame.event.get():
+                if one_event.type == pygame.KEYDOWN:
+                    if one_event.key == pygame.K_RETURN:
+                        paused = False
+
 
     # resetuje hru
     def reset_game(self):
